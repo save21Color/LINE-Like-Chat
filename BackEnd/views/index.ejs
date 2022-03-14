@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+            <h4>チャットルーム</h4>
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    </head>
+<body>
+            <textarea id="chatlogvalue" rows="20" cols ="50" value="" readOnly><%= value %></textarea>
+            <!-- <ul id="chatlogvalue"><%= value %></ul> -->
+            <p>
+            名前:<p>
+            <input type="text" id="name" size="10" value="名無し">
+            <p>
+            チャット:<p>
+                <form type="text" id="InputForm" size="40" autocomplete="off" action="#">
+                    <Input id="textvalue" type="text" size="50" >
+                    <Input id="input_message" type="submit" value ="送信" id="input_message" autocomplete="off" />
+                </form>
+    <script>
+
+            const socketio = io();
+            $(function(){
+                $('#InputForm').submit(function(){
+                var name = $('#name').val();
+                socketio.emit('message', name+":"+$('#textvalue').val());
+                $('#textvalue').val('');
+                return false;
+                });
+            });
+            socketio.on('messageShow', function(msg){
+            document.getElementById('chatlogvalue').value +=msg + "\n";
+            // $('#chatlogvalue').append($('<li>').text(msg));
+            });
+    </script>
+</body>
+</html>
